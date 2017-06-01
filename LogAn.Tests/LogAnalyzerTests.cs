@@ -1,41 +1,44 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace LogAn.Tests
 {
     [TestClass]
     public class LogAnalyzerTests
     {
-        [TestMethod]
-        public void IsValidFileName_BadExtension_ReturnsFalse()
+        [DataTestMethod]
+        [DataRow("filewithbadextension.foo")]
+        public void IsValidLogFileName_BadExtension_ReturnsFalse(string fileName)
         {
             // arrange
             var analyzer = new LogAnalyzer();
 
             // act
-            var result = analyzer.IsValidLogFileName("filewithbadextension.foo");
+            var result = analyzer.IsValidLogFileName(fileName);
 
             // assert
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
-        public void IsValidLogFileName_GoodExtensionLovercase_ReturnsTrue()
+        [DataTestMethod]
+        [DataRow("filewithgoodextention.slf")]
+        [DataRow("filewithgoodextention.SLF")]
+        public void IsValidLogFileName_ValidExtension_ReturnsTrue(string fileName)
         {
             var analyzer = new LogAnalyzer();
 
-            var result = analyzer.IsValidLogFileName("filewithgoodextention.slf");
+            var result = analyzer.IsValidLogFileName(fileName);
 
             Assert.IsTrue(result);
         }
 
         [TestMethod]
-        public void IsValidLogFileName_GoodExtensionUppercase_ReturnsTrue()
+        [ExpectedException(typeof(ArgumentException))]
+        public void IsValidLogFileName_EmptyFileName_ThrowsException()
         {
             var analyzer = new LogAnalyzer();
 
-            var result = analyzer.IsValidLogFileName("filewithgoodextention.SLF");
-
-            Assert.IsTrue(result);
+            analyzer.IsValidLogFileName(string.Empty);
         }
     }
 }
