@@ -5,7 +5,14 @@ namespace LogAn
 {
     public class LogAnalyzer
     {
-        private readonly IExtenstionManager _manager;
+        private IExtenstionManager _manager;
+
+        // Allows setting dependency via a property
+        public IExtenstionManager ExtenstionManager
+        {
+            get { return _manager; }
+            set { _manager = value; }
+        }
 
         public bool WasLastFileNameValid { get; set; }
 

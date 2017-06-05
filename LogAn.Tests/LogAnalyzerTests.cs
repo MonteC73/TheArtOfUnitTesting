@@ -143,6 +143,24 @@ namespace LogAn.Tests
 
         #endregion
 
+        #region Dependency Injection via a property
+
+        [TestMethod]
+        [TestCategory("Chapter 3")]
+        public void IsValidFileName_SupportedExtension_ReturnTrue()
+        {
+            var fakeExtensionManager = new FakeExtensionManager {WillBeValid = true};
+            var analyzer = MakeAnalyzer();
+            analyzer.ExtenstionManager = fakeExtensionManager; // Injection via a property, not by constructor
+
+            bool result = analyzer.IsValidLogFileName("somevalidextensions.slf");
+
+            Assert.IsTrue(result);
+        }
+
+        #endregion
+
+
         private static LogAnalyzer MakeAnalyzer()
         {
             IExtenstionManager manager = new FileExtensionManager();
