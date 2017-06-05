@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Helpers\AssertException.cs" />
     <Compile Include="LogAnalyzerTests.cs" />
+    <Compile Include="MemCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
