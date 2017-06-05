@@ -5,7 +5,7 @@ namespace LogAn
 {
     public class LogAnalyzer
     {
-        private IExtenstionManager _manager;
+        private readonly IExtenstionManager _manager;
 
         public bool WasLastFileNameValid { get; set; }
 
@@ -16,8 +16,8 @@ namespace LogAn
 
         public bool IsValidLogFileName(string fileName)
         {
-            IExtenstionManager manager = new FileExtensionManager();
-            WasLastFileNameValid = manager.IsValid(fileName);
+            //IExtenstionManager manager = new FileExtensionManager();
+            WasLastFileNameValid = _manager.IsValid(fileName);
 
             return WasLastFileNameValid;
         }

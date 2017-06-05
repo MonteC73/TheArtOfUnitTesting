@@ -113,19 +113,54 @@ namespace LogAn.Tests
 
         #endregion
 
+        #region Constructor Injection / Stubs
+
+        [TestMethod]
+        [TestCategory("Chapter 3")]
+        public void IsValidFileName_NameSupportedExtension_ReturnsTrue()
+        {
+            var fakeExtensionManager = new FakeExtensionManager {WillBeValid = true};
+            var analyzer = new LogAnalyzer(fakeExtensionManager);
+
+            bool result = analyzer.IsValidLogFileName("shorslf");
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [TestCategory("Chapter 3")]
+        public void IsValidFileName_ExtManagerThrowsException_ReturnsFalse()
+        {
+            var fakeExtensionManager = new FakeExtensionManager
+            {
+                WillBeValid = false,
+                WillThrow = new Exception("this is fake")
+            };
+            var analyzer = new LogAnalyzer(fakeExtensionManager);
+
+            AssertException.Throws<Exception>(() => analyzer.IsValidLogFileName("anything.anyextension"), "this is fake");
+        }
+
+        #endregion
+
         private static LogAnalyzer MakeAnalyzer()
         {
             IExtenstionManager manager = new FileExtensionManager();
             return new LogAnalyzer(manager);
         }
     }
+        
 
     internal class FakeExtensionManager : IExtenstionManager
     {
         public bool WillBeValid = false;
+        public Exception WillThrow = null;
 
         public bool IsValid(string fileName)
         {
+            if(WillThrow != null)
+                throw WillThrow;
+
             return WillBeValid;
         }
     }
