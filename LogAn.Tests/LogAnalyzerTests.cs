@@ -42,6 +42,19 @@ namespace LogAn.Tests
             analyzer.IsValidLogFileName(string.Empty);
         }
 
+        [DataTestMethod]
+        [DataRow("badfile.foo", false)]
+        [DataRow("goodfile.slf", true)]
+        public void IsValidFileName_WhenCalled_WasLastFileNameValid(string fileName, bool excpected)
+        {
+            var analyzer = new LogAnalyzer();
+
+            analyzer.IsValidLogFileName(fileName);
+            var actual = analyzer.WasLastFileNameValid;
+
+            Assert.AreEqual(excpected, actual);
+        }
+
 
         #region Microsoft recommendation for testing exception handling
 
