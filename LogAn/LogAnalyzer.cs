@@ -16,6 +16,12 @@ namespace LogAn
 
         public bool WasLastFileNameValid { get; set; }
 
+        public LogAnalyzer()
+        {
+            var extensionMenagerFactory = new ExtensionManagerFactory();
+            _manager = extensionMenagerFactory.Create();
+        }
+
         public LogAnalyzer(IExtenstionManager manager)
         {
             _manager = manager;
@@ -23,7 +29,6 @@ namespace LogAn
 
         public bool IsValidLogFileName(string fileName)
         {
-            //IExtenstionManager manager = new FileExtensionManager();
             WasLastFileNameValid = _manager.IsValid(fileName);
 
             return WasLastFileNameValid;
@@ -46,6 +51,21 @@ namespace LogAn
             }
 
             return true;
+        }
+    }
+
+    public class ExtensionManagerFactory // refactor this to static
+    {
+        private IExtenstionManager _customManager = null;
+
+        public IExtenstionManager Create()
+        {
+            return _customManager ?? new FileExtensionManager();
+        }
+
+        public void SetManager(IExtenstionManager manager)
+        {
+            _customManager = manager;
         }
     }
 

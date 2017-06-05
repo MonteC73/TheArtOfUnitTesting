@@ -160,6 +160,24 @@ namespace LogAn.Tests
 
         #endregion
 
+        #region Returning stub when the test is running with factory class
+
+        [TestMethod]
+        [TestCategory("Chapter 3")]
+        public void IsValidFileName_SupportedExtension_ReturnsTrue()
+        {
+            var extensionManagerFactory = new ExtensionManagerFactory();
+            var fakeExtensionManager = new FakeExtensionManager { WillBeValid = true };
+            extensionManagerFactory.SetManager(fakeExtensionManager);
+            var analyzer = extensionManagerFactory.Create();
+
+            bool result = analyzer.IsValid("somevalidextension.slf");
+
+            Assert.IsTrue(result);
+        }
+
+        #endregion
+
 
         private static LogAnalyzer MakeAnalyzer()
         {
